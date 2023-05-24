@@ -4,11 +4,11 @@ import 'CartScreen.dart';
 import 'accountScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +17,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
+  bool isSelected = false; //สร้างตัวแปร isSelected เพื่อเก็บสถานะการเลือก
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -33,6 +34,53 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _searchController = TextEditingController();
   ScrollController _scrollController = ScrollController();
   double _scrollOffset = 0;
+  bool isSelected = false;
+
+  //เปิด_buildGridItem
+  Widget _buildGridItem(String imagePath, String title, String price) {
+    return Container(
+      width: 144,
+      height: 192,
+      child: Material(
+        color: Color(0xFFFFFFFF),
+        elevation: 5,
+        borderRadius: BorderRadius.circular(16),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            Container(
+              width: 96,
+              height: 83,
+              child: Image.asset(imagePath),
+            ),
+            SizedBox(height: 12),
+            Text(
+              title,
+              style: TextStyle(
+                color: Color(0xff171717),
+                fontSize: 14,
+                fontFamily: "Roboto",
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 7),
+            Text(
+              price,
+              style: TextStyle(
+                color: Color(0xff171717),
+                fontSize: 12,
+                fontFamily: "Sarabun",
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  //ปิด_buildGridItem
 
   @override
   void dispose() {
@@ -258,9 +306,9 @@ class _MyHomePageState extends State<MyHomePage> {
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 10,
-                  offset: Offset(0, 3),
+                  spreadRadius: 0,
+                  blurRadius: 0,
+                  // offset: Offset(0, 3),
                 ),
               ],
             ),
@@ -306,625 +354,261 @@ class _MyHomePageState extends State<MyHomePage> {
 
       backgroundColor: Color(0xFFD3D3D3),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 2.05,
-              decoration: BoxDecoration(
-                color: Color(0xFFFF9900),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25.0),
-                  bottomRight: Radius.circular(25.0),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Container(
+          height: MediaQuery.of(context).size.height / 2,
+          decoration: BoxDecoration(
+            color: Color(0xFFFF9900),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(25.0),
+              bottomRight: Radius.circular(25.0),
+            ),
+          ),
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top + 30.0,
+            left: 15.0,
+          ),
+          child: Column(
+            children: [
+              searchBox,
+              SizedBox(height: 40.0),
+              Container(
+                height: 200.0,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: productList.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onHorizontalDragUpdate: handleScrollUpdate,
+                      onHorizontalDragEnd: handleScrollEnd,
+                      child: buildProductContainer(
+                        productList[index]['title']!,
+                        productList[index]['imageAsset']!,
+                        index,
+                      ),
+                    );
+                  },
                 ),
               ),
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 30.0,
-                left: 15.0,
-              ),
-              child: Column(
-                children: [
-                  searchBox,
-                  SizedBox(height: 40.0),
-                  Container(
-                    height: 200.0,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: productList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onHorizontalDragUpdate: handleScrollUpdate,
-                          onHorizontalDragEnd: handleScrollEnd,
-                          child: buildProductContainer(
-                            productList[index]['title']!,
-                            productList[index]['imageAsset']!,
-                            index,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24),
-                    child: Row(
-                      children: [
-                        Material(
-                          color: Color(0xFFFF9900),
-                          elevation: 35,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 2, color: Color(0xFFFF9900)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap for AIR FORCE
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 27,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 2.0,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AIR FORCE",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Material(
-                          color: Color(0xFFFF9900),
-                          elevation: 35,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 2, color: Color(0xFFFF9900)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap for AIR JORDAN
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 27,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 2.0,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AIR JORDAN",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Material(
-                          color: Color(0xFFFF9900),
-                          elevation: 35,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 2, color: Color(0xFFFF9900)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap for AIR MAX
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 27,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 2.0,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AIR MAX",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Material(
-                          color: Color(0xFFFF9900),
-                          elevation: 35,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 2, color: Color(0xFFFF9900)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap for AIR ZOOM
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 27,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 2.0,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AIR ZOOM",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        // Add similar code for additional containers
-                      ],
-                    ),
-                  ),
-                  // Add additional widgets here
-                  //ต่อ Box
-                  GridView.count(
-                    crossAxisCount: 2, // จำนวนคอลัมน์ต่อแถว
-                    crossAxisSpacing: 24, // ระยะห่างระหว่างคอลัมน์
-                    mainAxisSpacing: 24, // ระยะห่างระหว่างแถว
-                    padding: EdgeInsets.fromLTRB(18, 20, 15,
-                        0), // กำหนดระยะห่างจากด้านบน //EdgeInsets.From LTRB
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 192,
-                        child: Material(
-                          color: Color(0xFFFFFFFF),
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(16),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 144,
-                                height: 192,
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 96,
-                                      height: 83,
-                                      child: Image.asset(
-                                        'assets/images/Nike-Air-Force-1-_07-LX.png', // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
-                                        // fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 122,
-                                          height: 30,
-                                          child: Text(
-                                            "Nike Air Force 1 _07 LX",
-                                            style: TextStyle(
-                                              color: Color(0xff171717),
-                                              fontSize: 14,
-                                              fontFamily: "Roboto",
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: double.infinity,
-                                                  child: Text(
-                                                    "฿ 3,590",
-                                                    style: TextStyle(
-                                                      color: Color(0xff171717),
-                                                      fontSize: 12,
-                                                      fontFamily: "Sarabun",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              SizedBox(
-                                                width: 13.01,
-                                                height: 10.86,
-                                                child: Material(
-                                                  color: Color(0xffd7443e),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // เพิ่ม Box ตัวอื่น ๆ ตามต้องการ
-                      Container(
-                        width: double.infinity,
-                        height: 192,
-                        child: Material(
-                          color: Color(0xFFFFFFFF),
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(16),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 144,
-                                height: 192,
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 96,
-                                      height: 83,
-                                      child: Image.asset(
-                                        'assets/images/Nike-Air-Force-1-_07-Premium.png', // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
-                                        // fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 122,
-                                          height: 30,
-                                          child: Text(
-                                            "Nike Air Force 1 _07 Premium",
-                                            style: TextStyle(
-                                              color: Color(0xff171717),
-                                              fontSize: 14,
-                                              fontFamily: "Roboto",
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: double.infinity,
-                                                  child: Text(
-                                                    "฿ 3,590",
-                                                    style: TextStyle(
-                                                      color: Color(0xff171717),
-                                                      fontSize: 12,
-                                                      fontFamily: "Sarabun",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              SizedBox(
-                                                width: 13.01,
-                                                height: 10.86,
-                                                child: Material(
-                                                  color: Color(0xffd7443e),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 192,
-                        child: Material(
-                          color: Color(0xFFFFFFFF),
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(16),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 144,
-                                height: 192,
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 96,
-                                      height: 83,
-                                      child: Image.asset(
-                                        'assets/images/Nike-Air-Max-97-OG.png', // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
-                                        // fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 122,
-                                          height: 30,
-                                          child: Text(
-                                            "Nike Air Force 1 Shadow",
-                                            style: TextStyle(
-                                              color: Color(0xff171717),
-                                              fontSize: 14,
-                                              fontFamily: "Roboto",
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: double.infinity,
-                                                  child: Text(
-                                                    "฿ 3,590",
-                                                    style: TextStyle(
-                                                      color: Color(0xff171717),
-                                                      fontSize: 12,
-                                                      fontFamily: "Sarabun",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              SizedBox(
-                                                width: 13.01,
-                                                height: 10.86,
-                                                child: Material(
-                                                  color: Color(0xffd7443e),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 192,
-                        child: Material(
-                          color: Color(0xFFFFFFFF),
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(16),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 144,
-                                height: 192,
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 96,
-                                      height: 83,
-                                      child: Image.asset(
-                                        'assets/images/Nike-Air-Max-97-OG.png', // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
-                                        // fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 122,
-                                          height: 30,
-                                          child: Text(
-                                            "Nike Air Force 1 Shadow",
-                                            style: TextStyle(
-                                              color: Color(0xff171717),
-                                              fontSize: 14,
-                                              fontFamily: "Roboto",
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: double.infinity,
-                                                  child: Text(
-                                                    "฿ 3,590",
-                                                    style: TextStyle(
-                                                      color: Color(0xff171717),
-                                                      fontSize: 12,
-                                                      fontFamily: "Sarabun",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              SizedBox(
-                                                width: 13.01,
-                                                height: 10.86,
-                                                child: Material(
-                                                  color: Color(0xffd7443e),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+        //Row Center
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 24),
+                child: Row(
+                  children: [
+                    Material(
+                      color: widget.isSelected
+                          ? Color(0xFFFF9900)
+                          : Colors.transparent,
+                      elevation: widget.isSelected ? 35 : 0,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 2,
+                          color: widget.isSelected
+                              ? Color(0xFFFF9900)
+                              : Colors.transparent,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            widget.isSelected = !widget.isSelected;
+                          });
+                        },
+                        child: Container(
+                          width: widget.isSelected ? 90 : 80,
+                          height: 27,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 2.0,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "AIR FORCE",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontFamily: "Roboto",
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Material(
+                      color: widget.isSelected
+                          ? Color(0xFFFF9900)
+                          : Colors.transparent,
+                      elevation: widget.isSelected ? 35 : 0,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 2,
+                          color: widget.isSelected
+                              ? Color(0xFFFF9900)
+                              : Colors.transparent,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          // Handle onTap for AIR JORDAN
+                        },
+                        child: Container(
+                          width: 80,
+                          height: 27,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 2.0,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "AIR JORDAN",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontFamily: "Roboto",
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Material(
+                      color: widget.isSelected
+                          ? Color(0xFFFF9900)
+                          : Colors.transparent,
+                      elevation: widget.isSelected ? 35 : 0,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 2,
+                          color: widget.isSelected
+                              ? Color(0xFFFF9900)
+                              : Colors.transparent,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          // Handle onTap for AIR MAX
+                        },
+                        child: Container(
+                          width: 80,
+                          height: 27,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 2.0,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "AIR MAX",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontFamily: "Roboto",
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Material(
+                      color: widget.isSelected
+                          ? Color(0xFFFF9900)
+                          : Colors.transparent,
+                      elevation: widget.isSelected ? 35 : 0,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 2,
+                          color: widget.isSelected
+                              ? Color(0xFFFF9900)
+                              : Colors.transparent,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          // Handle onTap for AIR ZOOM
+                        },
+                        child: Container(
+                          width: 80,
+                          height: 27,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 2.0,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "AIR ZOOM",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontFamily: "Roboto",
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    // เพิ่มต่อจากนี้
+                  ],
+                ),
+              ),
+              GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 24,
+                mainAxisSpacing: 24,
+                padding: EdgeInsets.fromLTRB(18, 20, 15, 0),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  _buildGridItem(
+                    'assets/images/Nike-Air-Force-1-_07-LX.png',
+                    'Nike Air Force 1 _07 LX',
+                    '฿ 3,590',
+                  ),
+                  _buildGridItem(
+                    'assets/images/Nike-Air-Force-1-_07-Premium.png',
+                    'Nike Air Force 1 _07 Premium',
+                    '฿ 3,590',
+                  ),
+
+                  // เพิ่ม Grid Item อื่น ๆ ตามต้องการ
+                ],
+              ),
+            ],
+          ),
+        ),
+      ])),
     );
   }
 }
