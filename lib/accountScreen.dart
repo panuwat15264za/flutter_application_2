@@ -30,7 +30,7 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height - 150,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -46,22 +46,76 @@ class _AccountScreenState extends State<AccountScreen> {
                 ],
               ),
               SizedBox(height: 16),
-              Text(
-                'Name: ${widget.name}',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              Center(
+                child: Text(
+                  'Name : ${widget.name}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
-                'Phone: ${widget.phone}',
-                style: TextStyle(fontSize: 16),
+              Center(
+                child: Container(
+                  margin: EdgeInsets.all(10), //ระยะห่างช่อง
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: SizedBox(
+                    height: 20,
+                    width: 200,
+                  ),
+                ),
               ),
-              SizedBox(height: 8),
-              Text(
-                'Email: ${widget.email}',
-                style: TextStyle(fontSize: 16),
+              Center(
+                child: Text(
+                  'Phone : ${widget.phone}',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              Center(
+                child: Container(
+                  margin: EdgeInsets.all(10), //ระยะห่างช่อง
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: SizedBox(
+                    height: 2,
+                    width: 200,
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  'Email : ${widget.email}',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: SizedBox(
+                    height: 15,
+                    width: 200,
+                  ),
+                ),
               ),
               Spacer(),
             ],
