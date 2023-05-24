@@ -310,7 +310,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              height: MediaQuery.of(context).size.height / 2.15,
+              height: MediaQuery.of(context).size.height / 2.05,
               decoration: BoxDecoration(
                 color: Color(0xFFFF9900),
                 borderRadius: BorderRadius.only(
