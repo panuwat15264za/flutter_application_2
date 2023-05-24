@@ -17,7 +17,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: AccountScreen(
+        name: 'text',
+        phone: 'text',
+        email: 'text',
+        password: 'text',
+      ), //เลือกรันหน้าที่กำหนด
     );
   }
 }
@@ -298,55 +303,71 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: Builder(
         builder: (BuildContext context) {
           return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+              decoration: BoxDecoration(
+                // borderRadius: BorderRadius.only(
+                //   topLeft: Radius.circular(30),
+                //   topRight: Radius.circular(30),
+                // ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 0,
+                    blurRadius: 10,
+                    // offset: Offset(0, 3),
+                  ),
+                ],
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 0,
-                  blurRadius: 0,
-                  // offset: Offset(0, 3),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-              ],
-            ),
-            child: BottomNavigationBar(
-              elevation: 0,
-              backgroundColor: Colors.white,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
+                child: BottomNavigationBar(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.shopping_cart),
+                      label: 'Cart',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.account_circle),
+                      label: 'Account',
+                    ),
+                  ],
+                  selectedItemColor: Colors.orange,
+                  unselectedItemColor: Color(0xFF949499),
+                  onTap: (index) {
+                    if (index == 0) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                      );
+                    } else if (index == 1) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CartScreen()),
+                      );
+                    } else if (index == 2) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AccountScreen(
+                            name: 'text',
+                            phone: 'text',
+                            email: 'text',
+                            password: 'text',
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_cart),
-                  label: 'Cart',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle),
-                  label: 'Account',
-                ),
-              ],
-              selectedItemColor: Colors.orange,
-              unselectedItemColor: Color(0xFF949499),
-              onTap: (index) {
-                if (index == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CartScreen()),
-                  );
-                }
-                if (index == 2) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AccountScreen()),
-                  );
-                }
-              },
-            ),
-          );
+              ));
         },
       ),
 
@@ -402,7 +423,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 24),
+                padding: const EdgeInsets.only(left: 30),
                 child: Row(
                   children: [
                     Material(
@@ -466,7 +487,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          // Handle onTap for AIR JORDAN
+                          setState(() {
+                            widget.isSelected = !widget.isSelected;
+                          });
                         },
                         child: Container(
                           width: 80,
@@ -503,13 +526,16 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 2,
                           color: widget.isSelected
                               ? Color(0xFFFF9900)
-                              : Colors.transparent,
+                              : Colors.orange,
                         ),
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: InkWell(
                         onTap: () {
-                          // Handle onTap for AIR MAX
+                          setState(() {
+                            widget.isSelected = !widget.isSelected;
+                          });
+                          // ดำเนินการเมื่อแตะที่ AIR MAX
                         },
                         child: Container(
                           width: 80,
@@ -525,7 +551,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "AIR MAX",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: widget.isSelected
+                                    ? Colors.white
+                                    : Colors.orange,
                                 fontSize: 11,
                                 fontFamily: "Roboto",
                                 fontWeight: FontWeight.w700,
@@ -536,6 +564,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     SizedBox(width: 10),
+
                     Material(
                       color: widget.isSelected
                           ? Color(0xFFFF9900)
@@ -552,6 +581,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       child: InkWell(
                         onTap: () {
+                          setState(() {
+                            widget.isSelected = !widget.isSelected;
+                          });
                           // Handle onTap for AIR ZOOM
                         },
                         child: Container(
@@ -601,7 +633,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     'Nike Air Force 1 _07 Premium',
                     '฿ 3,590',
                   ),
-
                   // เพิ่ม Grid Item อื่น ๆ ตามต้องการ
                 ],
               ),
