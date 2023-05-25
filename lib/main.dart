@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'CartScreen.dart';
 import 'accountScreen.dart';
+import 'data.dart';
+import 'shoesScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,18 +15,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => MyAppState(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(),
       ),
-      home: AccountScreen(
-        name: 'text',
-        phone: 'text',
-        email: 'text',
-        password: 'text',
-      ), //เลือกรันหน้าที่กำหนด
     );
+  }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return MaterialApp(
+  //     title: 'Flutter Demo',
+  //     theme: ThemeData(
+  //       primarySwatch: Colors.blue,
+  //     ),
+  //     home: ShoesScreen(shoe: shoes[0]), // ส่งข้อมูลรองเท้าเข้าไปใน ShoesScreen
+  //   );
+  // }
+}
+
+class MyAppState extends ChangeNotifier {
+  var index = 0;
+
+  void setIndex(int tosetIndex) {
+    index = tosetIndex;
+    notifyListeners();
   }
 }
 
@@ -41,51 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double _scrollOffset = 0;
   bool isSelected = false;
 
-  //เปิด_buildGridItem
-  Widget _buildGridItem(String imagePath, String title, String price) {
-    return Container(
-      width: 144,
-      height: 192,
-      child: Material(
-        color: Color(0xFFFFFFFF),
-        elevation: 5,
-        borderRadius: BorderRadius.circular(16),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            Container(
-              width: 96,
-              height: 83,
-              child: Image.asset(imagePath),
-            ),
-            SizedBox(height: 12),
-            Text(
-              title,
-              style: TextStyle(
-                color: Color(0xff171717),
-                fontSize: 14,
-                fontFamily: "Roboto",
-                fontWeight: FontWeight.w700,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 7),
-            Text(
-              price,
-              style: TextStyle(
-                color: Color(0xff171717),
-                fontSize: 12,
-                fontFamily: "Sarabun",
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  //ปิด_buildGridItem
+  var selectedIndex = 0;
 
   @override
   void dispose() {
@@ -157,10 +133,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 width: 291,
                 height: 155,
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(16),
-                //   color: Color(0xFF003366),
-                // ),
                 padding: const EdgeInsets.only(
                   left: 14,
                   right: 41,
@@ -229,6 +201,11 @@ class _MyHomePageState extends State<MyHomePage> {
               child: GestureDetector(
                 onTap: () {
                   // ดำเนินการที่คุณต้องการเมื่อคลิกที่รูป
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShoesScreen(shoe: shoes[0])),
+                  );
                 },
                 child: Container(
                   width: 179,
@@ -248,6 +225,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //เพิ่มใหม่ภัทร
+    Widget page = Page1();
+    switch (selectedIndex) {
+      case 0:
+        page = Page1();
+        break;
+      case 1:
+        page = Page2();
+        break;
+      case 2:
+        page = Page3();
+        break;
+      case 3:
+        page = Page4();
+        break;
+    }
+    //เพิ่มใหม่ภัทร
     Widget searchBox = GestureDetector(
       onTap: handleSearch,
       child: Container(
@@ -298,7 +292,9 @@ class _MyHomePageState extends State<MyHomePage> {
         'imageAsset': 'assets/images/Nike-Air-Max-97-OG.png',
       },
     ];
-
+    //เพิ่มใหม่ภัทร
+    int selectedValue = 0;
+    //เพิ่มใหม่ภัทร
     return Scaffold(
       bottomNavigationBar: Builder(
         builder: (BuildContext context) {
@@ -342,12 +338,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   selectedItemColor: Colors.orange,
                   unselectedItemColor: Color(0xFF949499),
                   onTap: (index) {
-                    if (index == 0) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()),
-                      );
-                    } else if (index == 1) {
+                    if (index == 1) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => CartScreen()),
@@ -416,230 +407,193 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        //Row Center
-        Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: Row(
-                  children: [
-                    Material(
-                      color: widget.isSelected
-                          ? Color(0xFFFF9900)
-                          : Colors.transparent,
-                      elevation: widget.isSelected ? 35 : 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 2,
-                          color: widget.isSelected
-                              ? Color(0xFFFF9900)
-                              : Colors.transparent,
+        Container(
+          height: MediaQuery.of(context).size.height,
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9900),
+                          padding: EdgeInsets.all(5),
                         ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: InkWell(
-                        onTap: () {
+                        child: Text('nike air force',
+                            style: TextStyle(fontSize: 10)),
+                        onPressed: () async {
                           setState(() {
-                            widget.isSelected = !widget.isSelected;
+                            selectedIndex = 0;
+                            print(0);
+                          });
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           ShoesScreen(shoe: shoes[0])),
+                          // );
+                        },
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9900),
+                          padding: EdgeInsets.all(5),
+                        ),
+                        child: Text('nike air max',
+                            style: TextStyle(fontSize: 10)),
+                        onPressed: () async {
+                          setState(() {
+                            selectedIndex = 1;
+                            print(1);
                           });
                         },
-                        child: Container(
-                          width: widget.isSelected ? 90 : 80,
-                          height: 27,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 2.0,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "AIR FORCE",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontFamily: "Roboto",
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Material(
-                      color: widget.isSelected
-                          ? Color(0xFFFF9900)
-                          : Colors.transparent,
-                      elevation: widget.isSelected ? 35 : 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 2,
-                          color: widget.isSelected
-                              ? Color(0xFFFF9900)
-                              : Colors.transparent,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9900),
+                          padding: EdgeInsets.all(5),
                         ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: InkWell(
-                        onTap: () {
+                        child: Text('nike vapor max',
+                            style: TextStyle(fontSize: 10)),
+                        onPressed: () async {
                           setState(() {
-                            widget.isSelected = !widget.isSelected;
+                            selectedIndex = 2;
+                            print(2);
                           });
                         },
-                        child: Container(
-                          width: 80,
-                          height: 27,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 2.0,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "AIR JORDAN",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontFamily: "Roboto",
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Material(
-                      color: widget.isSelected
-                          ? Color(0xFFFF9900)
-                          : Colors.transparent,
-                      elevation: widget.isSelected ? 35 : 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 2,
-                          color: widget.isSelected
-                              ? Color(0xFFFF9900)
-                              : Colors.orange,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9900),
+                          padding: EdgeInsets.all(5),
                         ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: InkWell(
-                        onTap: () {
+                        child: Text('nike vapor max',
+                            style: TextStyle(fontSize: 10)),
+                        onPressed: () async {
                           setState(() {
-                            widget.isSelected = !widget.isSelected;
+                            selectedIndex = 3;
+                            print(3);
                           });
-                          // ดำเนินการเมื่อแตะที่ AIR MAX
                         },
-                        child: Container(
-                          width: 80,
-                          height: 27,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 2.0,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "AIR MAX",
-                              style: TextStyle(
-                                color: widget.isSelected
-                                    ? Colors.white
-                                    : Colors.orange,
-                                fontSize: 11,
-                                fontFamily: "Roboto",
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-
-                    Material(
-                      color: widget.isSelected
-                          ? Color(0xFFFF9900)
-                          : Colors.transparent,
-                      elevation: widget.isSelected ? 35 : 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 2,
-                          color: widget.isSelected
-                              ? Color(0xFFFF9900)
-                              : Colors.transparent,
-                        ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            widget.isSelected = !widget.isSelected;
-                          });
-                          // Handle onTap for AIR ZOOM
-                        },
-                        child: Container(
-                          width: 80,
-                          height: 27,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 2.0,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "AIR ZOOM",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontFamily: "Roboto",
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    // เพิ่มต่อจากนี้
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 24,
-                mainAxisSpacing: 24,
-                padding: EdgeInsets.fromLTRB(18, 20, 15, 0),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  _buildGridItem(
-                    'assets/images/Nike-Air-Force-1-_07-LX.png',
-                    'Nike Air Force 1 _07 LX',
-                    '฿ 3,590',
+                Expanded(
+                  child: Container(
+                    height: 200,
+                    child: page,
                   ),
-                  _buildGridItem(
-                    'assets/images/Nike-Air-Force-1-_07-Premium.png',
-                    'Nike Air Force 1 _07 Premium',
-                    '฿ 3,590',
-                  ),
-                  // เพิ่ม Grid Item อื่น ๆ ตามต้องการ
-                ],
-              ),
-            ],
+                )
+              ],
+            ),
           ),
-        ),
+        )
       ])),
+    );
+  }
+}
+
+class Page1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var current = appState.index;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25.0),
+                bottomRight: Radius.circular(25.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var current = appState.index;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25.0),
+                bottomRight: Radius.circular(25.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Page3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var current = appState.index;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              color: Colors.orange,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25.0),
+                bottomRight: Radius.circular(25.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Page4 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var current = appState.index;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25.0),
+                bottomRight: Radius.circular(25.0),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
