@@ -22,17 +22,9 @@ class ShoeData {
 List<ShoeData> returnShoesType(int param) {
   List<ShoeData> shoesList = List.empty(growable: true);
   for (int i = 0; i < shoes.length; i++) {
-    print("try" +
-        shoes[i].shoeName +
-        " Shoe series is " +
-        shoes[i].shoeSeries.toString());
     if (shoes[i].shoeSeries == param) {
       shoesList.add(shoes[i]);
-      print("add" + shoes[i].shoeName);
     }
-  }
-  if (shoesList == null) {
-    return shoes;
   }
   return shoesList;
 }
@@ -95,7 +87,7 @@ List<ShoeData> shoes = [
     ],
   ),
   ShoeData(
-    shoeSeries: 1,
+    shoeSeries: 2,
     imagePath: 'assets/images/Nike-Air-Max-97.png',
     shoeName: 'Nike-Air-Max-97',
     shoeDescription: 'รองเท้าดี',
@@ -109,7 +101,7 @@ List<ShoeData> shoes = [
     ],
   ),
   ShoeData(
-    shoeSeries: 1,
+    shoeSeries: 2,
     imagePath: 'assets/images/Nike-Air-Max-97-OG.png',
     shoeName: 'Nike-Air-Max-97-OG',
     shoeDescription: 'รองเท้าดี',
@@ -138,7 +130,7 @@ List<ShoeData> shoes = [
   ),
   ShoeData(
     shoeSeries: 3,
-    imagePath: 'assets/images/Nike-Air-Zoom-SuperRep-3',
+    imagePath: 'assets/images/Nike-Air-Zoom-SuperRep-3.png',
     shoeName: 'Shoe 3',
     shoeDescription: 'รองเท้าดี',
     price: 65,
