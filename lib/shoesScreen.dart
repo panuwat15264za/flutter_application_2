@@ -42,8 +42,8 @@ class ShoesScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Image.asset(
-                shoe.shoeName,
-                fit: BoxFit.cover,
+                shoe.imagePath,
+                // fit: BoxFit.cover,
               ),
             ),
             SizedBox(height: 16.0),

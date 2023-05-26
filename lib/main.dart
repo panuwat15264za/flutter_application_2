@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isChanged2 = true;
   bool isChanged3 = true;
 
-  var _list = [false, false, false, false];
+  var _list = [true, false, false, false];
 
   Widget sneakerSeriesBar() {
     return SingleChildScrollView(
@@ -269,11 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildProductContainer(
-    String title,
-    String imageAsset,
-    int index,
-  ) {
+  Widget buildProductContainer(ShoeData data, int index) {
     List<Color> boxColors = [
       Color(0xFF003366),
       Color(0xFF004D99),
@@ -329,7 +325,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 236,
                           height: 47,
                           child: Text(
-                            "Nike Air Force 1 \nLow SP",
+                            data.shoeName,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -343,7 +339,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 152,
                           height: 27,
                           child: Text(
-                            "฿ 3,679",
+                            data.price.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -368,14 +364,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ShoesScreen(shoe: shoes[0])),
+                        builder: (context) => ShoesScreen(shoe: data)),
                   );
                 },
                 child: Container(
                   width: 179,
                   height: 265,
                   child: Image.asset(
-                    imageAsset, // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
+                    data.imagePath, // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
                     // fit: BoxFit.cover,
                   ),
                 ),
@@ -392,21 +388,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //เพิ่มใหม่ภัทร
     Widget page = Page1();
     var shoeList = returnShoesType(selectedIndex);
-    // switch (selectedIndex) {
-    //   case 0:
-    //     page = Page1();
-    //     break;
-    //   case 1:
-    //     page = Page2();
-    //     break;
-    //   case 2:
-    //     page = Page3();
-    //     break;
-    //   case 3:
-    //     page = Page4();
-    //     break;
-    // }
-    //เพิ่มใหม่ภัทร
     Widget searchBox = GestureDetector(
       onTap: handleSearch,
       child: Container(
@@ -443,22 +424,20 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    List<Map<String, String>> productList = [
-      {
-        'title': 'Nike Air Force',
-        'imageAsset': 'assets/images/Nike-Air-Force-1-_07-LX.png',
-      },
-      {
-        'title': 'Nike-Air-Force-1-_07-Premium',
-        'imageAsset': 'assets/images/Nike-Air-Force-1-_07-Premium.png',
-      },
-      {
-        'title': 'Nike-Air-Max-97-OG',
-        'imageAsset': 'assets/images/Nike-Air-Max-97-OG.png',
-      },
-    ];
-    //เพิ่มใหม่ภัทร
-    //เพิ่มใหม่ภัทร
+    // List<Map<String, String>> productList = [
+    //   {
+    //     'title': 'Nike Air Force',
+    //     'imageAsset': 'assets/images/Nike-Air-Force-1-_07-LX.png',
+    //   },
+    //   {
+    //     'title': 'Nike-Air-Force-1-_07-Premium',
+    //     'imageAsset': 'assets/images/Nike-Air-Force-1-_07-Premium.png',
+    //   },
+    //   {
+    //     'title': 'Nike-Air-Max-97-OG',
+    //     'imageAsset': 'assets/images/Nike-Air-Max-97-OG.png',
+    //   },
+    // ];
     return Scaffold(
       bottomNavigationBar: Builder(
         builder: (BuildContext context) {
@@ -550,16 +529,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
                   controller: _scrollController,
                   scrollDirection: Axis.horizontal,
-                  itemCount: productList.length,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onHorizontalDragUpdate: handleScrollUpdate,
                       onHorizontalDragEnd: handleScrollEnd,
-                      child: buildProductContainer(
-                        productList[index]['title']!,
-                        productList[index]['imageAsset']!,
-                        index,
-                      ),
+                      child: buildProductContainer(shoes[index], index),
                     );
                   },
                 ),
@@ -607,7 +582,7 @@ class Page1 extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ShoesScreen(shoe: shoes[index])),
+                      builder: (context) => ShoesScreen(shoe: shoeList[index])),
                 );
               },
               child: Card(
