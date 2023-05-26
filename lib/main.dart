@@ -21,6 +21,12 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          textTheme: const TextTheme(
+            displayLarge:
+                TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          ),
         ),
         home: MyHomePage(),
       ),
@@ -40,9 +46,10 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var index = 0;
-
+  var shoeList = returnShoesType(0);
   void setIndex(int tosetIndex) {
     index = tosetIndex;
+    shoeList = returnShoesType(index);
     notifyListeners();
   }
 }
@@ -105,6 +112,104 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget sneakerSeriesBar() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+      //width: MediaQuery.of(context).size.width * 2,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ElevatedButton(
+            style: ButtonStyle(
+              shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.transparent),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(
+                    color: Colors.orange,
+                    width: 3,
+                  ),
+                ),
+              ),
+            ),
+            child: const Text('nike air max',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
+            onPressed: () async {
+              setState(() {
+                MyAppState().setIndex(0);
+                print(0);
+              });
+            },
+          ),
+          SizedBox(width: 20),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(color: Colors.orange),
+                ),
+              ),
+            ),
+            child: const Text('nike air max',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
+            onPressed: () async {
+              setState(() {
+                MyAppState().setIndex(1);
+                print(1);
+              });
+            },
+          ),
+          SizedBox(width: 20),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(color: Colors.orange),
+                ),
+              ),
+            ),
+            child: const Text('nike vapor max',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
+            onPressed: () async {
+              setState(() {
+                selectedIndex = 2;
+                print(2);
+              });
+            },
+          ),
+          SizedBox(width: 20),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(color: Colors.orange),
+                ),
+              ),
+            ),
+            child: const Text('nike vapor max',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
+            onPressed: () async {
+              setState(() {
+                selectedIndex = 3;
+                print(3);
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildProductContainer(
     String title,
     String imageAsset,
@@ -120,7 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Container(
       width: 320.0,
-      margin: EdgeInsets.only(right: 30),
+      margin: const EdgeInsets.fromLTRB(0, 0, 30, 0),
       decoration: BoxDecoration(
         color: boxColor,
         borderRadius: BorderRadius.circular(20.0),
@@ -227,20 +332,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     //เพิ่มใหม่ภัทร
     Widget page = Page1();
-    switch (selectedIndex) {
-      case 0:
-        page = Page1();
-        break;
-      case 1:
-        page = Page2();
-        break;
-      case 2:
-        page = Page3();
-        break;
-      case 3:
-        page = Page4();
-        break;
-    }
+    // switch (selectedIndex) {
+    //   case 0:
+    //     page = Page1();
+    //     break;
+    //   case 1:
+    //     page = Page2();
+    //     break;
+    //   case 2:
+    //     page = Page3();
+    //     break;
+    //   case 3:
+    //     page = Page4();
+    //     break;
+    // }
     //เพิ่มใหม่ภัทร
     Widget searchBox = GestureDetector(
       onTap: handleSearch,
@@ -293,17 +398,12 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     ];
     //เพิ่มใหม่ภัทร
-    int selectedValue = 0;
     //เพิ่มใหม่ภัทร
     return Scaffold(
       bottomNavigationBar: Builder(
         builder: (BuildContext context) {
           return Container(
               decoration: BoxDecoration(
-                // borderRadius: BorderRadius.only(
-                //   topLeft: Radius.circular(30),
-                //   topRight: Radius.circular(30),
-                // ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
@@ -363,13 +463,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       //บนคือ nav ล่างจอ
-
+      //main BG
       backgroundColor: Color(0xFFD3D3D3),
       body: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Container(
-          height: MediaQuery.of(context).size.height / 2,
+          height: MediaQuery.of(context).size.height / 2.2,
           decoration: BoxDecoration(
             color: Color(0xFFFF9900),
             borderRadius: BorderRadius.only(
@@ -408,90 +508,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         Container(
-          height: MediaQuery.of(context).size.height,
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFFF9900),
-                          padding: EdgeInsets.all(5),
-                        ),
-                        child: Text('nike air force',
-                            style: TextStyle(fontSize: 10)),
-                        onPressed: () async {
-                          setState(() {
-                            selectedIndex = 0;
-                            print(0);
-                          });
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           ShoesScreen(shoe: shoes[0])),
-                          // );
-                        },
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFFF9900),
-                          padding: EdgeInsets.all(5),
-                        ),
-                        child: Text('nike air max',
-                            style: TextStyle(fontSize: 10)),
-                        onPressed: () async {
-                          setState(() {
-                            selectedIndex = 1;
-                            print(1);
-                          });
-                        },
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFFF9900),
-                          padding: EdgeInsets.all(5),
-                        ),
-                        child: Text('nike vapor max',
-                            style: TextStyle(fontSize: 10)),
-                        onPressed: () async {
-                          setState(() {
-                            selectedIndex = 2;
-                            print(2);
-                          });
-                        },
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFFF9900),
-                          padding: EdgeInsets.all(5),
-                        ),
-                        child: Text('nike vapor max',
-                            style: TextStyle(fontSize: 10)),
-                        onPressed: () async {
-                          setState(() {
-                            selectedIndex = 3;
-                            print(3);
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 200,
-                    child: page,
-                  ),
-                )
-              ],
-            ),
-          ),
+          child: sneakerSeriesBar(),
+        ),
+        Container(
+          child: page,
         )
       ])),
     );
@@ -503,21 +523,67 @@ class Page1 extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var current = appState.index;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 2,
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25.0),
-                bottomRight: Radius.circular(25.0),
+    var shoeList = appState.shoeList;
+
+    return Container(
+      color: Colors.amber,
+      child: GridView.builder(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        // padding: const EdgeInsets.symmetric(horizontal: 30),
+
+        itemCount: shoeList.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return Card(
+            child: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          shoeList[index].imagePath,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Text(
+                        'Title',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Subtitle',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 0.0,
+          mainAxisSpacing: 0,
+          //mainAxisExtent: 100,
+        ),
       ),
     );
   }
@@ -528,21 +594,66 @@ class Page2 extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var current = appState.index;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 2,
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25.0),
-                bottomRight: Radius.circular(25.0),
+    var shoeList = appState.shoeList;
+    return Container(
+      color: Colors.amber,
+      child: GridView.builder(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        // padding: const EdgeInsets.symmetric(horizontal: 30),
+
+        itemCount: shoeList.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return Card(
+            child: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          shoeList[index].imagePath,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Text(
+                        'Title',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Subtitle',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 0.0,
+          mainAxisSpacing: 0,
+          //mainAxisExtent: 100,
+        ),
       ),
     );
   }
@@ -553,21 +664,66 @@ class Page3 extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var current = appState.index;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 2,
-            decoration: BoxDecoration(
-              color: Colors.orange,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25.0),
-                bottomRight: Radius.circular(25.0),
+    var shoeList = returnShoesType(2);
+    return Container(
+      color: Colors.amber,
+      child: GridView.builder(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        // padding: const EdgeInsets.symmetric(horizontal: 30),
+
+        itemCount: shoeList.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return Card(
+            child: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          shoeList[index].imagePath,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Text(
+                        'Title',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Subtitle',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 0.0,
+          mainAxisSpacing: 0,
+          //mainAxisExtent: 100,
+        ),
       ),
     );
   }
@@ -578,22 +734,70 @@ class Page4 extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var current = appState.index;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 2,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25.0),
-                bottomRight: Radius.circular(25.0),
+    var shoeList = returnShoesType(3);
+    return Container(
+      color: Colors.amber,
+      child: GridView.builder(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        // padding: const EdgeInsets.symmetric(horizontal: 30),
+
+        itemCount: shoeList.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return Card(
+            child: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          shoeList[index].imagePath,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Text(
+                        'Title',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Subtitle',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 0.0,
+          mainAxisSpacing: 0,
+          //mainAxisExtent: 100,
+        ),
       ),
     );
   }
 }
+
+var testvar = Row();
+var testContainer = Container();
