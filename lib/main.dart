@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            child: Text('nike air max',
+            child: Text('Nike air force',
                 style: TextStyle(
                     fontSize: 20,
                     color: _list[0] ? Colors.white : Colors.orange)),
@@ -179,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            child: Text('nike air max',
+            child: Text('Nike air max',
                 style: TextStyle(
                     fontSize: 20,
                     color: _list[1] ? Colors.white : Colors.orange)),
@@ -213,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            child: Text('nike air max',
+            child: Text('Nike air jordan',
                 style: TextStyle(
                     fontSize: 20,
                     color: _list[2] ? Colors.white : Colors.orange)),
@@ -247,7 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            child: Text('nike air max',
+            child: Text('Nike air zoom',
                 style: TextStyle(
                     fontSize: 20,
                     color: _list[3] ? Colors.white : Colors.orange)),

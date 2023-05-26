@@ -11,6 +11,11 @@ class ShoesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isFavorite = false;
+    //
+    ValueNotifier<bool> showDescription = ValueNotifier<bool>(false);
+    //
+    List<Color> colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow];
+    int selectedColor;
 
     return Scaffold(
       appBar: AppBar(
@@ -91,15 +96,36 @@ class ShoesScreen extends StatelessWidget {
             SizedBox(height: 8.0),
             ButtonRow(),
             SizedBox(height: 16.0),
-            TextButton(
-              onPressed: () {
-                // โค้ดสำหรับแสดงคำอธิบาย
-              },
-              child: Text(
-                'Description',
-                style: TextStyle(
-                  fontSize: 18.0,
-                ),
+            Container(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      showDescription.value = !showDescription.value;
+                    },
+                    child: Text(
+                      'Description',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: showDescription,
+                    builder: (context, value, child) {
+                      return value
+                          ? Text(
+                              shoe.shoeDescription,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
+                            )
+                          : SizedBox.shrink();
+                    },
+                  ),
+                ],
               ),
             ),
           ],

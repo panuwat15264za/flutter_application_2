@@ -11,7 +11,6 @@ class ShoeData {
   ShoeData({
     required this.shoeSeries,
     required this.imagePath,
-    // required this.Shoe,
     required this.shoeName,
     required this.shoeDescription,
     required this.price,
@@ -131,7 +130,7 @@ List<ShoeData> shoes = [
   ShoeData(
     shoeSeries: 3,
     imagePath: 'assets/images/Nike-Air-Zoom-SuperRep-3.png',
-    shoeName: 'Shoe 3',
+    shoeName: 'Nike-Air-Zoom-SuperRep-3',
     shoeDescription: 'รองเท้าดี',
     price: 65,
     colors: [
