@@ -1,0 +1,100 @@
+{
+    "product_data": [
+        {
+            "product_id": "nk01",
+            "product_name": "Nike Air Force 1'07LX",
+            "product_sex": "Women shoes",
+            "product_price": "4800",
+            "product_type": "Air Force",
+            "product_size36": "instock",
+            "product_size37": "instock",
+            "product_size38": "instock",
+            "product_size39": "instock",
+            "product_size40": "instock"
+        },
+        {
+            "product_id": "nk02",
+            "product_name": "Nike Air Force 1'07 Premium",
+            "product_sex": "Men shoes",
+            "product_price": "9409",
+            "product_type": "Air Force",
+            "product_size36": "instock",
+            "product_size37": "instock",
+            "product_size38": "instock",
+            "product_size39": "instock",
+            "product_size40": "instock"
+        },
+        {
+            "product_id": "nk03",
+            "product_name": "Nike Air Max 97",
+            "product_sex": "Men shoes",
+            "product_price": "5800",
+            "product_type": "Air Max",
+            "product_size36": "instock",
+            "product_size37": "instock",
+            "product_size38": "instock",
+            "product_size39": "instock",
+            "product_size40": "instock"
+        },
+        {
+            "product_id": "nk04",
+            "product_name": "Nike Air Max 97 OG",
+            "product_sex": "Men shoes",
+            "product_price": "5199",
+            "product_type": "Air Max",
+            "product_size36": "instock",
+            "product_size37": "instock",
+            "product_size38": "instock",
+            "product_size39": "instock",
+            "product_size40": "instock"
+        },
+        {
+            "product_id": "nk05",
+            "product_name": "Nike Air Zoom Pegasus 38",
+            "product_sex": "Women shoes",
+            "product_price": "7500",
+            "product_type": "Air Zoom",
+            "product_size36": "instock",
+            "product_size37": "instock",
+            "product_size38": "instock",
+            "product_size39": "instock",
+            "product_size40": "instock"
+        },
+        {
+            "product_id": "nk06",
+            "product_name": "Nike Air Zoom Terra Kiger 7",
+            "product_sex": "Women shoes",
+            "product_price": "3217",
+            "product_type": "Air Zoom",
+            "product_size36": "instock",
+            "product_size37": "instock",
+            "product_size38": "instock",
+            "product_size39": "instock",
+            "product_size40": "instock"
+        },
+        {
+            "product_id": "nk07",
+            "product_name": "Nike Air Jordan 1 KO",
+            "product_sex": "Men shoes",
+            "product_price": "5400",
+            "product_type": "Air Jordan",
+            "product_size36": "instock",
+            "product_size37": "instock",
+            "product_size38": "instock",
+            "product_size39": "instock",
+            "product_size40": "instock"
+        },
+        {
+            "product_id": "nk08",
+            "product_name": "Nike Air Jordan 1 Mid SE",
+            "product_sex": "Men shoes",
+            "product_price": "10788",
+            "product_type": "Air Jordan",
+            "product_size36": "instock",
+            "product_size37": "instock",
+            "product_size38": "instock",
+            "product_size39": "instock",
+            "product_size40": "instock"
+        }
+    ]
+}
