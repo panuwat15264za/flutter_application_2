@@ -39,7 +39,7 @@ List<ShoeData> returnShoesType(int param) {
 
 List<ShoeData> shoes = [
   ShoeData(
-    shoeSeries: 0,
+    shoeSeries: 1,
     imagePath: 'assets/images/Nike-Air-Force-1-_07-LX.png',
     shoeName: 'Air-Jordan-1-Retro-High-OG',
     shoeDescription: 'รองเท้าดี',
@@ -53,7 +53,7 @@ List<ShoeData> shoes = [
     ],
   ),
   ShoeData(
-    shoeSeries: 0,
+    shoeSeries: 1,
     imagePath: 'assets/images/Jordan-1-KO.png',
     shoeName: 'Jordan-1-KO',
     shoeDescription: 'รองเท้าดี',
@@ -95,7 +95,7 @@ List<ShoeData> shoes = [
     ],
   ),
   ShoeData(
-    shoeSeries: 0,
+    shoeSeries: 1,
     imagePath: 'assets/images/Nike-Air-Max-97.png',
     shoeName: 'Nike-Air-Max-97',
     shoeDescription: 'รองเท้าดี',
@@ -109,7 +109,7 @@ List<ShoeData> shoes = [
     ],
   ),
   ShoeData(
-    shoeSeries: 0,
+    shoeSeries: 1,
     imagePath: 'assets/images/Nike-Air-Max-97-OG.png',
     shoeName: 'Nike-Air-Max-97-OG',
     shoeDescription: 'รองเท้าดี',
@@ -123,9 +123,9 @@ List<ShoeData> shoes = [
     ],
   ),
   ShoeData(
-    shoeSeries: 1,
-    imagePath: 'assets/images/Nike-Air-Zoom-G.T.-Run',
-    shoeName: 'Shoe 3',
+    shoeSeries: 3,
+    imagePath: 'assets/images/Nike-Air-Zoom-G.T.-Run.png',
+    shoeName: 'Nike-Air-Zoom-G.T.-Run',
     shoeDescription: 'รองเท้าดี',
     price: 96,
     colors: [
@@ -137,7 +137,7 @@ List<ShoeData> shoes = [
     ],
   ),
   ShoeData(
-    shoeSeries: 1,
+    shoeSeries: 3,
     imagePath: 'assets/images/Nike-Air-Zoom-SuperRep-3',
     shoeName: 'Shoe 3',
     shoeDescription: 'รองเท้าดี',

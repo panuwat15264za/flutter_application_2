@@ -46,9 +46,10 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var index = 0;
-
+  var shoeList = returnShoesType(0);
   void setIndex(int tosetIndex) {
     index = tosetIndex;
+    shoeList = returnShoesType(index);
     notifyListeners();
   }
 }
@@ -121,39 +122,62 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF9900),
-              padding: const EdgeInsets.all(5),
+            style: ButtonStyle(
+              shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.transparent),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(
+                    color: Colors.orange,
+                    width: 3,
+                  ),
+                ),
+              ),
             ),
-            child: const Text('nike air force', style: TextStyle(fontSize: 20)),
+            child: const Text('nike air max',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
             onPressed: () async {
               setState(() {
-                selectedIndex = 0;
+                MyAppState().setIndex(0);
                 print(0);
               });
             },
           ),
           SizedBox(width: 20),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF9900),
-              padding: const EdgeInsets.all(5),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(color: Colors.orange),
+                ),
+              ),
             ),
-            child: const Text('nike air max', style: TextStyle(fontSize: 20)),
+            child: const Text('nike air max',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
             onPressed: () async {
               setState(() {
-                selectedIndex = 1;
+                MyAppState().setIndex(1);
                 print(1);
               });
             },
           ),
           SizedBox(width: 20),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF9900),
-              padding: const EdgeInsets.all(5),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(color: Colors.orange),
+                ),
+              ),
             ),
-            child: const Text('nike vapor max', style: TextStyle(fontSize: 20)),
+            child: const Text('nike vapor max',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
             onPressed: () async {
               setState(() {
                 selectedIndex = 2;
@@ -163,11 +187,17 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           SizedBox(width: 20),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF9900),
-              padding: const EdgeInsets.all(5),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(color: Colors.orange),
+                ),
+              ),
             ),
-            child: const Text('nike vapor max', style: TextStyle(fontSize: 20)),
+            child: const Text('nike vapor max',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
             onPressed: () async {
               setState(() {
                 selectedIndex = 3;
@@ -302,20 +332,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     //เพิ่มใหม่ภัทร
     Widget page = Page1();
-    switch (selectedIndex) {
-      case 0:
-        page = Page1();
-        break;
-      case 1:
-        page = Page2();
-        break;
-      case 2:
-        page = Page3();
-        break;
-      case 3:
-        page = Page4();
-        break;
-    }
+    // switch (selectedIndex) {
+    //   case 0:
+    //     page = Page1();
+    //     break;
+    //   case 1:
+    //     page = Page2();
+    //     break;
+    //   case 2:
+    //     page = Page3();
+    //     break;
+    //   case 3:
+    //     page = Page4();
+    //     break;
+    // }
     //เพิ่มใหม่ภัทร
     Widget searchBox = GestureDetector(
       onTap: handleSearch,
@@ -368,7 +398,6 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     ];
     //เพิ่มใหม่ภัทร
-    int selectedValue = 0;
     //เพิ่มใหม่ภัทร
     return Scaffold(
       bottomNavigationBar: Builder(
@@ -494,7 +523,8 @@ class Page1 extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var current = appState.index;
-    var shoeList = returnShoesType(0);
+    var shoeList = appState.shoeList;
+
     return Container(
       color: Colors.amber,
       child: GridView.builder(
@@ -564,7 +594,7 @@ class Page2 extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var current = appState.index;
-    var shoeList = returnShoesType(1);
+    var shoeList = appState.shoeList;
     return Container(
       color: Colors.amber,
       child: GridView.builder(
@@ -634,21 +664,66 @@ class Page3 extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var current = appState.index;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 2,
-            decoration: BoxDecoration(
-              color: Colors.orange,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25.0),
-                bottomRight: Radius.circular(25.0),
+    var shoeList = returnShoesType(2);
+    return Container(
+      color: Colors.amber,
+      child: GridView.builder(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        // padding: const EdgeInsets.symmetric(horizontal: 30),
+
+        itemCount: shoeList.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return Card(
+            child: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          shoeList[index].imagePath,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Text(
+                        'Title',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Subtitle',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 0.0,
+          mainAxisSpacing: 0,
+          //mainAxisExtent: 100,
+        ),
       ),
     );
   }
@@ -659,21 +734,66 @@ class Page4 extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var current = appState.index;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 2,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25.0),
-                bottomRight: Radius.circular(25.0),
+    var shoeList = returnShoesType(3);
+    return Container(
+      color: Colors.amber,
+      child: GridView.builder(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        // padding: const EdgeInsets.symmetric(horizontal: 30),
+
+        itemCount: shoeList.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return Card(
+            child: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          shoeList[index].imagePath,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Text(
+                        'Title',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Subtitle',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 0.0,
+          mainAxisSpacing: 0,
+          //mainAxisExtent: 100,
+        ),
       ),
     );
   }
