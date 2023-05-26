@@ -1,111 +1,187 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/main.dart';
+import 'package:flutter_application_2/CartScreen.dart';
 
-import 'cartScreen.dart';
+import 'main.dart';
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
+  final String name;
+  final String phone;
+  final String email;
+  final String password;
+
+  AccountScreen({
+    required this.name,
+    required this.phone,
+    required this.email,
+    required this.password,
+  });
+
+  @override
+  _AccountScreenState createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text('Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () {
-              // เพิ่มโค้ดที่ต้องการเมื่อกดปุ่ม SAVE
-            },
-          ),
-        ],
+        title: Text('Account'),
+        backgroundColor: Colors.orange,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: CircleAvatar(
-                radius: 60,
-                // รูปภาพที่เลือก
-                backgroundImage: NetworkImage('https://example.com/avatar.jpg'),
+        child: Container(
+          height: MediaQuery.of(context).size.height - 150,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundImage:
+                        NetworkImage('https://example.com/avatar.jpg'),
+                  ),
+                ],
               ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Name',
+              SizedBox(height: 16),
+              Center(
+                child: Text(
+                  'Name : ${widget.name}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Phone',
+              Center(
+                child: Container(
+                  margin: EdgeInsets.all(10), //ระยะห่างช่อง
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: SizedBox(
+                    height: 20,
+                    width: 200,
+                  ),
+                ),
               ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Email',
+              Center(
+                child: Text(
+                  'Phone : ${widget.phone}',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Password',
+              Center(
+                child: Container(
+                  margin: EdgeInsets.all(10), //ระยะห่างช่อง
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: SizedBox(
+                    height: 2,
+                    width: 200,
+                  ),
+                ),
               ),
-              obscureText: true,
-            ),
-          ],
+              Center(
+                child: Text(
+                  'Email : ${widget.email}',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: SizedBox(
+                    height: 15,
+                    width: 200,
+                  ),
+                ),
+              ),
+              Spacer(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 0,
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 2,
-              blurRadius: 10,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Cart',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: 'Account',
-            ),
-          ],
-          selectedItemColor: Colors.orange,
-          unselectedItemColor: Color(0xFF949499),
-          onTap: (index) {
-            if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CartScreen()),
-              );
-            } else if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyApp()),
-              );
-            }
-          },
+          child: BottomNavigationBar(
+            elevation: 0,
+            backgroundColor: Colors.white,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart),
+                label: 'Cart',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle),
+                label: 'Account',
+              ),
+            ],
+            selectedItemColor: Colors.orange,
+            unselectedItemColor: Color(0xFF949499),
+            onTap: (index) {
+              if (index == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              } else if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartScreen()),
+                );
+              } else if (index == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AccountScreen(
+                      name: 'text',
+                      phone: 'text',
+                      email: 'text',
+                      password: 'text',
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
         ),
       ),
     );

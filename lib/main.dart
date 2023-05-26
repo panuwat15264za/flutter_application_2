@@ -1,29 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'CartScreen.dart';
 import 'accountScreen.dart';
+import 'data.dart';
+import 'shoesScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => MyAppState(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(),
       ),
-      home: const MyHomePage(),
     );
+  }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return MaterialApp(
+  //     title: 'Flutter Demo',
+  //     theme: ThemeData(
+  //       primarySwatch: Colors.blue,
+  //     ),
+  //     home: ShoesScreen(shoe: shoes[0]), // ส่งข้อมูลรองเท้าเข้าไปใน ShoesScreen
+  //   );
+  // }
+}
+
+class MyAppState extends ChangeNotifier {
+  var index = 0;
+
+  void setIndex(int tosetIndex) {
+    index = tosetIndex;
+    notifyListeners();
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
+  bool isSelected = false; //สร้างตัวแปร isSelected เพื่อเก็บสถานะการเลือก
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -33,6 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _searchController = TextEditingController();
   ScrollController _scrollController = ScrollController();
   double _scrollOffset = 0;
+  bool isSelected = false;
+
+  var selectedIndex = 0;
 
   @override
   void dispose() {
@@ -104,10 +133,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 width: 291,
                 height: 155,
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(16),
-                //   color: Color(0xFF003366),
-                // ),
                 padding: const EdgeInsets.only(
                   left: 14,
                   right: 41,
@@ -176,6 +201,11 @@ class _MyHomePageState extends State<MyHomePage> {
               child: GestureDetector(
                 onTap: () {
                   // ดำเนินการที่คุณต้องการเมื่อคลิกที่รูป
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShoesScreen(shoe: shoes[0])),
+                  );
                 },
                 child: Container(
                   width: 179,
@@ -195,6 +225,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //เพิ่มใหม่ภัทร
+    Widget page = Page1();
+    switch (selectedIndex) {
+      case 0:
+        page = Page1();
+        break;
+      case 1:
+        page = Page2();
+        break;
+      case 2:
+        page = Page3();
+        break;
+      case 3:
+        page = Page4();
+        break;
+    }
+    //เพิ่มใหม่ภัทร
     Widget searchBox = GestureDetector(
       onTap: handleSearch,
       child: Container(
@@ -245,60 +292,73 @@ class _MyHomePageState extends State<MyHomePage> {
         'imageAsset': 'assets/images/Nike-Air-Max-97-OG.png',
       },
     ];
-
+    //เพิ่มใหม่ภัทร
+    int selectedValue = 0;
+    //เพิ่มใหม่ภัทร
     return Scaffold(
       bottomNavigationBar: Builder(
         builder: (BuildContext context) {
           return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+              decoration: BoxDecoration(
+                // borderRadius: BorderRadius.only(
+                //   topLeft: Radius.circular(30),
+                //   topRight: Radius.circular(30),
+                // ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 0,
+                    blurRadius: 10,
+                    // offset: Offset(0, 3),
+                  ),
+                ],
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 10,
-                  offset: Offset(0, 3),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-              ],
-            ),
-            child: BottomNavigationBar(
-              elevation: 0,
-              backgroundColor: Colors.white,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
+                child: BottomNavigationBar(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.shopping_cart),
+                      label: 'Cart',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.account_circle),
+                      label: 'Account',
+                    ),
+                  ],
+                  selectedItemColor: Colors.orange,
+                  unselectedItemColor: Color(0xFF949499),
+                  onTap: (index) {
+                    if (index == 1) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CartScreen()),
+                      );
+                    } else if (index == 2) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AccountScreen(
+                            name: 'text',
+                            phone: 'text',
+                            email: 'text',
+                            password: 'text',
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_cart),
-                  label: 'Cart',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle),
-                  label: 'Account',
-                ),
-              ],
-              selectedItemColor: Colors.orange,
-              unselectedItemColor: Color(0xFF949499),
-              onTap: (index) {
-                if (index == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CartScreen()),
-                  );
-                }
-                if (index == 2) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AccountScreen()),
-                  );
-                }
-              },
-            ),
-          );
+              ));
         },
       ),
 
@@ -306,624 +366,233 @@ class _MyHomePageState extends State<MyHomePage> {
 
       backgroundColor: Color(0xFFD3D3D3),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 2.05,
-              decoration: BoxDecoration(
-                color: Color(0xFFFF9900),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25.0),
-                  bottomRight: Radius.circular(25.0),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Container(
+          height: MediaQuery.of(context).size.height / 2,
+          decoration: BoxDecoration(
+            color: Color(0xFFFF9900),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(25.0),
+              bottomRight: Radius.circular(25.0),
+            ),
+          ),
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top + 30.0,
+            left: 15.0,
+          ),
+          child: Column(
+            children: [
+              searchBox,
+              SizedBox(height: 40.0),
+              Container(
+                height: 200.0,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: productList.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onHorizontalDragUpdate: handleScrollUpdate,
+                      onHorizontalDragEnd: handleScrollEnd,
+                      child: buildProductContainer(
+                        productList[index]['title']!,
+                        productList[index]['imageAsset']!,
+                        index,
+                      ),
+                    );
+                  },
                 ),
               ),
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 30.0,
-                left: 15.0,
-              ),
-              child: Column(
-                children: [
-                  searchBox,
-                  SizedBox(height: 40.0),
-                  Container(
-                    height: 200.0,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: productList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onHorizontalDragUpdate: handleScrollUpdate,
-                          onHorizontalDragEnd: handleScrollEnd,
-                          child: buildProductContainer(
-                            productList[index]['title']!,
-                            productList[index]['imageAsset']!,
-                            index,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24),
-                    child: Row(
-                      children: [
-                        Material(
-                          color: Color(0xFFFF9900),
-                          elevation: 35,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 2, color: Color(0xFFFF9900)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap for AIR FORCE
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 27,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 2.0,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AIR FORCE",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+            ],
+          ),
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height,
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9900),
+                          padding: EdgeInsets.all(5),
                         ),
-                        SizedBox(width: 10),
-                        Material(
-                          color: Color(0xFFFF9900),
-                          elevation: 35,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 2, color: Color(0xFFFF9900)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap for AIR JORDAN
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 27,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 2.0,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AIR JORDAN",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Material(
-                          color: Color(0xFFFF9900),
-                          elevation: 35,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 2, color: Color(0xFFFF9900)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap for AIR MAX
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 27,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 2.0,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AIR MAX",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Material(
-                          color: Color(0xFFFF9900),
-                          elevation: 35,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 2, color: Color(0xFFFF9900)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap for AIR ZOOM
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 27,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 2.0,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AIR ZOOM",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        // Add similar code for additional containers
-                      ],
-                    ),
-                  ),
-                  // Add additional widgets here
-                  //ต่อ Box
-                  GridView.count(
-                    crossAxisCount: 2, // จำนวนคอลัมน์ต่อแถว
-                    crossAxisSpacing: 24, // ระยะห่างระหว่างคอลัมน์
-                    mainAxisSpacing: 24, // ระยะห่างระหว่างแถว
-                    padding: EdgeInsets.fromLTRB(18, 20, 15,
-                        0), // กำหนดระยะห่างจากด้านบน //EdgeInsets.From LTRB
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 192,
-                        child: Material(
-                          color: Color(0xFFFFFFFF),
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(16),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 144,
-                                height: 192,
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 96,
-                                      height: 83,
-                                      child: Image.asset(
-                                        'assets/images/Nike-Air-Force-1-_07-LX.png', // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
-                                        // fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 122,
-                                          height: 30,
-                                          child: Text(
-                                            "Nike Air Force 1 _07 LX",
-                                            style: TextStyle(
-                                              color: Color(0xff171717),
-                                              fontSize: 14,
-                                              fontFamily: "Roboto",
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: double.infinity,
-                                                  child: Text(
-                                                    "฿ 3,590",
-                                                    style: TextStyle(
-                                                      color: Color(0xff171717),
-                                                      fontSize: 12,
-                                                      fontFamily: "Sarabun",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              SizedBox(
-                                                width: 13.01,
-                                                height: 10.86,
-                                                child: Material(
-                                                  color: Color(0xffd7443e),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        child: Text('nike air force',
+                            style: TextStyle(fontSize: 10)),
+                        onPressed: () async {
+                          setState(() {
+                            selectedIndex = 0;
+                            print(0);
+                          });
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           ShoesScreen(shoe: shoes[0])),
+                          // );
+                        },
                       ),
-                      // เพิ่ม Box ตัวอื่น ๆ ตามต้องการ
-                      Container(
-                        width: double.infinity,
-                        height: 192,
-                        child: Material(
-                          color: Color(0xFFFFFFFF),
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(16),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 144,
-                                height: 192,
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 96,
-                                      height: 83,
-                                      child: Image.asset(
-                                        'assets/images/Nike-Air-Force-1-_07-Premium.png', // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
-                                        // fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 122,
-                                          height: 30,
-                                          child: Text(
-                                            "Nike Air Force 1 _07 Premium",
-                                            style: TextStyle(
-                                              color: Color(0xff171717),
-                                              fontSize: 14,
-                                              fontFamily: "Roboto",
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: double.infinity,
-                                                  child: Text(
-                                                    "฿ 3,590",
-                                                    style: TextStyle(
-                                                      color: Color(0xff171717),
-                                                      fontSize: 12,
-                                                      fontFamily: "Sarabun",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              SizedBox(
-                                                width: 13.01,
-                                                height: 10.86,
-                                                child: Material(
-                                                  color: Color(0xffd7443e),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9900),
+                          padding: EdgeInsets.all(5),
                         ),
+                        child: Text('nike air max',
+                            style: TextStyle(fontSize: 10)),
+                        onPressed: () async {
+                          setState(() {
+                            selectedIndex = 1;
+                            print(1);
+                          });
+                        },
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 192,
-                        child: Material(
-                          color: Color(0xFFFFFFFF),
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(16),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 144,
-                                height: 192,
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 96,
-                                      height: 83,
-                                      child: Image.asset(
-                                        'assets/images/Nike-Air-Max-97-OG.png', // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
-                                        // fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 122,
-                                          height: 30,
-                                          child: Text(
-                                            "Nike Air Force 1 Shadow",
-                                            style: TextStyle(
-                                              color: Color(0xff171717),
-                                              fontSize: 14,
-                                              fontFamily: "Roboto",
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: double.infinity,
-                                                  child: Text(
-                                                    "฿ 3,590",
-                                                    style: TextStyle(
-                                                      color: Color(0xff171717),
-                                                      fontSize: 12,
-                                                      fontFamily: "Sarabun",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              SizedBox(
-                                                width: 13.01,
-                                                height: 10.86,
-                                                child: Material(
-                                                  color: Color(0xffd7443e),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9900),
+                          padding: EdgeInsets.all(5),
                         ),
+                        child: Text('nike vapor max',
+                            style: TextStyle(fontSize: 10)),
+                        onPressed: () async {
+                          setState(() {
+                            selectedIndex = 2;
+                            print(2);
+                          });
+                        },
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 192,
-                        child: Material(
-                          color: Color(0xFFFFFFFF),
-                          elevation: 5,
-                          borderRadius: BorderRadius.circular(16),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 144,
-                                height: 192,
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 96,
-                                      height: 83,
-                                      child: Image.asset(
-                                        'assets/images/Nike-Air-Max-97-OG.png', // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
-                                        // fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 122,
-                                          height: 30,
-                                          child: Text(
-                                            "Nike Air Force 1 Shadow",
-                                            style: TextStyle(
-                                              color: Color(0xff171717),
-                                              fontSize: 14,
-                                              fontFamily: "Roboto",
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: double.infinity,
-                                                  child: Text(
-                                                    "฿ 3,590",
-                                                    style: TextStyle(
-                                                      color: Color(0xff171717),
-                                                      fontSize: 12,
-                                                      fontFamily: "Sarabun",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              SizedBox(
-                                                width: 13.01,
-                                                height: 10.86,
-                                                child: Material(
-                                                  color: Color(0xffd7443e),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF9900),
+                          padding: EdgeInsets.all(5),
                         ),
+                        child: Text('nike vapor max',
+                            style: TextStyle(fontSize: 10)),
+                        onPressed: () async {
+                          setState(() {
+                            selectedIndex = 3;
+                            print(3);
+                          });
+                        },
                       ),
                     ],
-                  )
-                ],
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 200,
+                    child: page,
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ])),
+    );
+  }
+}
+
+class Page1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var current = appState.index;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25.0),
+                bottomRight: Radius.circular(25.0),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var current = appState.index;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25.0),
+                bottomRight: Radius.circular(25.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Page3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var current = appState.index;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              color: Colors.orange,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25.0),
+                bottomRight: Radius.circular(25.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Page4 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var current = appState.index;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25.0),
+                bottomRight: Radius.circular(25.0),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
