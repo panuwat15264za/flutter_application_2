@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'CartScreen.dart';
+import 'cartScreen.dart';
 import 'data.dart';
 
 class ShoesScreen extends StatelessWidget {
   final ShoeData shoe;
+  final BuildContext context;
+  final CartScreen cartScreen;
 
-  ShoesScreen({required this.shoe});
+  ShoesScreen(
+      {required this.shoe, required this.context, required this.cartScreen});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +53,6 @@ class ShoesScreen extends StatelessWidget {
             Expanded(
               child: Image.asset(
                 shoe.imagePath,
-                // fit: BoxFit.cover,
               ),
             ),
             SizedBox(height: 16.0),
@@ -70,13 +73,6 @@ class ShoesScreen extends StatelessWidget {
             SizedBox(height: 16.0),
             Row(
               children: [
-                Text(
-                  'Color:',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                  ),
-                ),
-                SizedBox(width: 8.0),
                 Container(
                   width: 24.0,
                   height: 24.0,
@@ -136,12 +132,7 @@ class ShoesScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: ElevatedButton.icon(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CartScreen(),
-              ),
-            );
+            _addToCart(context);
           },
           icon: Icon(Icons.shopping_cart),
           label: Text('ADD TO CART'),
@@ -195,4 +186,21 @@ class _ButtonRowState extends State<ButtonRow> {
       ],
     );
   }
+}
+
+void _addToCart(BuildContext context) {
+  // สร้างอินสแตนซ์ของคลาส ScreenCart โดยใช้ข้อมูลจาก shoe ที่รับเข้ามา
+  ScreenCart cartItem = ScreenCart(
+    shoeName: shoe.shoeName,
+    imagePath: shoe.imagePath,
+    price: shoe.price,
+  );
+
+  // เรียกใช้เมธอดในตัวแปร cartScreen ที่รับเข้ามาเพื่อเพิ่มรายการลงในตะกร้าสินค้า
+  cartScreen.addToCart(cartItem);
+
+  // แสดง SnackBar เพื่อแสดงข้อความยืนยันการเพิ่มสินค้าลงในตะกร้า
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Added to cart')),
+  );
 }
