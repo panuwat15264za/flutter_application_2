@@ -27,6 +27,7 @@ class ShoesScreen extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+        iconTheme: IconThemeData(color: Colors.black),
         actions: [
           IconButton(
             icon: Icon(

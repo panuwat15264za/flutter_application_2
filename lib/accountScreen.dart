@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/CartScreen.dart';
+import 'package:flutter_application_2/signin.dart';
 
+import 'package:flutter_application_2/signup.dart';
 import 'main.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -23,167 +25,173 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Account'),
-        backgroundColor: Colors.orange,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height - 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Spacer(),
-              Row(
+    return WillPopScope(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Account'),
+            backgroundColor: Colors.orange,
+          ),
+          body: SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height - 150,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundImage:
-                        NetworkImage('https://example.com/avatar.jpg'),
+                  Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        //backgroundImage:
+                        //NetworkImage('https://example.com/avatar.jpg'),
+                      ),
+                    ],
                   ),
+                  SizedBox(height: 16),
+                  Center(
+                    child: Text(
+                      'Name : ${widget.name}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.all(10), //ระยะห่างช่อง
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.5),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: SizedBox(
+                        height: 20,
+                        width: 200,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'Phone : ${widget.phone}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.all(10), //ระยะห่างช่อง
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.5),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: SizedBox(
+                        height: 2,
+                        width: 200,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'Email : ${widget.email}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.5),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      child: SizedBox(
+                        height: 15,
+                        width: 200,
+                      ),
+                    ),
+                  ),
+                  Spacer(),
                 ],
               ),
-              SizedBox(height: 16),
-              Center(
-                child: Text(
-                  'Name : ${widget.name}',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Center(
-                child: Container(
-                  margin: EdgeInsets.all(10), //ระยะห่างช่อง
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.grey.withOpacity(0.5),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: SizedBox(
-                    height: 20,
-                    width: 200,
-                  ),
-                ),
-              ),
-              Center(
-                child: Text(
-                  'Phone : ${widget.phone}',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              Center(
-                child: Container(
-                  margin: EdgeInsets.all(10), //ระยะห่างช่อง
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.grey.withOpacity(0.5),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: SizedBox(
-                    height: 2,
-                    width: 200,
-                  ),
-                ),
-              ),
-              Center(
-                child: Text(
-                  'Email : ${widget.email}',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.grey.withOpacity(0.5),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: SizedBox(
-                    height: 15,
-                    width: 200,
-                  ),
-                ),
-              ),
-              Spacer(),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 0,
-              blurRadius: 10,
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
           ),
-          child: BottomNavigationBar(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: 'Cart',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: 'Account',
-              ),
-            ],
-            selectedItemColor: Colors.orange,
-            unselectedItemColor: Color(0xFF949499),
-            onTap: (index) {
-              if (index == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyHomePage()),
-                );
-              } else if (index == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CartScreen()),
-                );
-              } else if (index == 2) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AccountScreen(
-                      name: 'text',
-                      phone: 'text',
-                      email: 'text',
-                      password: 'text',
-                    ),
+              child: BottomNavigationBar(
+                elevation: 0,
+                backgroundColor: Colors.white,
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
                   ),
-                );
-              }
-            },
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.shopping_cart),
+                    label: 'Cart',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.account_circle),
+                    label: 'Account',
+                  ),
+                ],
+                selectedItemColor: Colors.orange,
+                unselectedItemColor: Color(0xFF949499),
+                onTap: (index) {
+                  if (index == 0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                    );
+                  } else if (index == 1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CartScreen()),
+                    );
+                  } else if (index == 2) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AccountScreen(
+                          name: 'text',
+                          phone: 'text',
+                          email: 'text',
+                          password: 'text',
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
           ),
         ),
-      ),
-    );
+        onWillPop: () async {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SignupPage()));
+          return true;
+        });
   }
 }
