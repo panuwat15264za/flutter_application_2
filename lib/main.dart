@@ -50,6 +50,7 @@ class MyAppState extends ChangeNotifier {
   void setIndex(int tosetIndex) {
     index = tosetIndex;
     shoeList = returnShoesType(index);
+    print(index);
     notifyListeners();
   }
 }
@@ -112,6 +113,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  bool isChanged0 = true;
+  bool isChanged1 = true;
+  bool isChanged2 = true;
+  bool isChanged3 = true;
+
+  var _list = [true, false, false, false];
+
   Widget sneakerSeriesBar() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -123,12 +131,13 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           ElevatedButton(
             style: ButtonStyle(
-              shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(Colors.transparent),
+              shadowColor: MaterialStateProperty.all<Color>(
+                  _list[0] ? Colors.black : Colors.transparent),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  _list[0] ? Colors.orange : Colors.transparent),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(30),
                   side: BorderSide(
                     color: Colors.orange,
                     width: 3,
@@ -136,73 +145,123 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            child: const Text('nike air max',
-                style: TextStyle(fontSize: 20, color: Colors.white)),
-            onPressed: () async {
+            child: Text('Nike air force',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: _list[0] ? Colors.white : Colors.orange)),
+            onPressed: () {
               setState(() {
-                MyAppState().setIndex(0);
-                print(0);
+                for (int i = 0; i < _list.length; i++) {
+                  if (i == 0)
+                    _list[i] = true;
+                  else
+                    _list[i] = false;
+                }
               });
+              final appstate = Provider.of<MyAppState>(context, listen: false);
+              appstate.setIndex(0);
             },
           ),
           SizedBox(width: 20),
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shadowColor: MaterialStateProperty.all<Color>(
+                  _list[1] ? Colors.black : Colors.transparent),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  _list[1] ? Colors.orange : Colors.transparent),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.orange),
+                  borderRadius: BorderRadius.circular(30),
+                  side: BorderSide(
+                    color: Colors.orange,
+                    width: 3,
+                  ),
                 ),
               ),
             ),
-            child: const Text('nike air max',
-                style: TextStyle(fontSize: 20, color: Colors.white)),
-            onPressed: () async {
+            child: Text('Nike air max',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: _list[1] ? Colors.white : Colors.orange)),
+            onPressed: () {
               setState(() {
-                MyAppState().setIndex(1);
-                print(1);
+                for (int i = 0; i < _list.length; i++) {
+                  if (i == 1)
+                    _list[i] = true;
+                  else
+                    _list[i] = false;
+                }
               });
+              final appstate = Provider.of<MyAppState>(context, listen: false);
+              appstate.setIndex(1);
             },
           ),
           SizedBox(width: 20),
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shadowColor: MaterialStateProperty.all<Color>(
+                  _list[2] ? Colors.black : Colors.transparent),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  _list[2] ? Colors.orange : Colors.transparent),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.orange),
+                  borderRadius: BorderRadius.circular(30),
+                  side: BorderSide(
+                    color: Colors.orange,
+                    width: 3,
+                  ),
                 ),
               ),
             ),
-            child: const Text('nike vapor max',
-                style: TextStyle(fontSize: 20, color: Colors.white)),
-            onPressed: () async {
+            child: Text('Nike air jordan',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: _list[2] ? Colors.white : Colors.orange)),
+            onPressed: () {
               setState(() {
-                selectedIndex = 2;
-                print(2);
+                for (int i = 0; i < _list.length; i++) {
+                  if (i == 2)
+                    _list[i] = true;
+                  else
+                    _list[i] = false;
+                }
               });
+              final appstate = Provider.of<MyAppState>(context, listen: false);
+              appstate.setIndex(2);
             },
           ),
           SizedBox(width: 20),
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              shadowColor: MaterialStateProperty.all<Color>(
+                  _list[3] ? Colors.black : Colors.transparent),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  _list[3] ? Colors.orange : Colors.transparent),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.orange),
+                  borderRadius: BorderRadius.circular(30),
+                  side: BorderSide(
+                    color: Colors.orange,
+                    width: 3,
+                  ),
                 ),
               ),
             ),
-            child: const Text('nike vapor max',
-                style: TextStyle(fontSize: 20, color: Colors.white)),
-            onPressed: () async {
+            child: Text('Nike air zoom',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: _list[3] ? Colors.white : Colors.orange)),
+            onPressed: () {
               setState(() {
-                selectedIndex = 3;
-                print(3);
+                for (int i = 0; i < _list.length; i++) {
+                  if (i == 3)
+                    _list[i] = true;
+                  else
+                    _list[i] = false;
+                }
               });
+              final appstate = Provider.of<MyAppState>(context, listen: false);
+              appstate.setIndex(3);
             },
           ),
         ],
@@ -210,11 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildProductContainer(
-    String title,
-    String imageAsset,
-    int index,
-  ) {
+  Widget buildProductContainer(ShoeData data, int index) {
     List<Color> boxColors = [
       Color(0xFF003366),
       Color(0xFF004D99),
@@ -270,7 +325,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 236,
                           height: 47,
                           child: Text(
-                            "Nike Air Force 1 \nLow SP",
+                            data.shoeName,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -284,7 +339,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 152,
                           height: 27,
                           child: Text(
-                            "฿ 3,679",
+                            data.price.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -309,14 +364,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ShoesScreen(shoe: shoes[0])),
+                        builder: (context) => ShoesScreen(shoe: data)),
                   );
                 },
                 child: Container(
                   width: 179,
                   height: 265,
                   child: Image.asset(
-                    imageAsset, // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
+                    data.imagePath, // เปลี่ยนเป็นพาธรูปภาพที่คุณต้องการ
                     // fit: BoxFit.cover,
                   ),
                 ),
@@ -332,21 +387,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     //เพิ่มใหม่ภัทร
     Widget page = Page1();
-    // switch (selectedIndex) {
-    //   case 0:
-    //     page = Page1();
-    //     break;
-    //   case 1:
-    //     page = Page2();
-    //     break;
-    //   case 2:
-    //     page = Page3();
-    //     break;
-    //   case 3:
-    //     page = Page4();
-    //     break;
-    // }
-    //เพิ่มใหม่ภัทร
+    var shoeList = returnShoesType(selectedIndex);
     Widget searchBox = GestureDetector(
       onTap: handleSearch,
       child: Container(
@@ -383,22 +424,20 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    List<Map<String, String>> productList = [
-      {
-        'title': 'Nike Air Force',
-        'imageAsset': 'assets/images/Nike-Air-Force-1-_07-LX.png',
-      },
-      {
-        'title': 'Nike-Air-Force-1-_07-Premium',
-        'imageAsset': 'assets/images/Nike-Air-Force-1-_07-Premium.png',
-      },
-      {
-        'title': 'Nike-Air-Max-97-OG',
-        'imageAsset': 'assets/images/Nike-Air-Max-97-OG.png',
-      },
-    ];
-    //เพิ่มใหม่ภัทร
-    //เพิ่มใหม่ภัทร
+    // List<Map<String, String>> productList = [
+    //   {
+    //     'title': 'Nike Air Force',
+    //     'imageAsset': 'assets/images/Nike-Air-Force-1-_07-LX.png',
+    //   },
+    //   {
+    //     'title': 'Nike-Air-Force-1-_07-Premium',
+    //     'imageAsset': 'assets/images/Nike-Air-Force-1-_07-Premium.png',
+    //   },
+    //   {
+    //     'title': 'Nike-Air-Max-97-OG',
+    //     'imageAsset': 'assets/images/Nike-Air-Max-97-OG.png',
+    //   },
+    // ];
     return Scaffold(
       bottomNavigationBar: Builder(
         builder: (BuildContext context) {
@@ -490,16 +529,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
                   controller: _scrollController,
                   scrollDirection: Axis.horizontal,
-                  itemCount: productList.length,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onHorizontalDragUpdate: handleScrollUpdate,
                       onHorizontalDragEnd: handleScrollEnd,
-                      child: buildProductContainer(
-                        productList[index]['title']!,
-                        productList[index]['imageAsset']!,
-                        index,
-                      ),
+                      child: buildProductContainer(shoes[index], index),
                     );
                   },
                 ),
@@ -511,7 +546,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: sneakerSeriesBar(),
         ),
         Container(
-          child: page,
+          child: Page1(),
         )
       ])),
     );
@@ -519,14 +554,20 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class Page1 extends StatelessWidget {
+  Page1({Key? key}) : super(key: key);
+
+  bool isSelected = false;
+
+  //สร้างตัวแปร isSelected เพื่อเก็บสถานะการเลือก
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var current = appState.index;
     var shoeList = appState.shoeList;
+    // for (var i = 0; i < shoeList.length; i++) {
+    //   print("Recieve" + shoeList[i].shoeName);
+    // }
 
     return Container(
-      color: Colors.amber,
       child: GridView.builder(
         physics: ScrollPhysics(),
         shrinkWrap: true,
@@ -535,47 +576,56 @@ class Page1 extends StatelessWidget {
 
         itemCount: shoeList.length,
         itemBuilder: (BuildContext ctx, index) {
-          return Card(
-            child: Container(
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
-              margin: EdgeInsets.all(5),
-              padding: EdgeInsets.all(5),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+          return GestureDetector(
+              onTap: () {
+                // ดำเนินการที่คุณต้องการเมื่อคลิกที่รูป
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ShoesScreen(shoe: shoeList[index])),
+                );
+              },
+              child: Card(
+                child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5),
+                  child: Stack(
                     children: [
-                      Expanded(
-                        child: Image.asset(
-                          shoeList[index].imagePath,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Text(
-                        'Title',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                            'Subtitle',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
+                          Expanded(
+                            child: Image.asset(
+                              shoeList[index].imagePath,
+                              fit: BoxFit.fill,
                             ),
                           ),
+                          Text(
+                            shoeList[index].shoeName,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                shoeList[index].price.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          )
                         ],
-                      )
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
-          );
+                ),
+              ));
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -589,215 +639,73 @@ class Page1 extends StatelessWidget {
   }
 }
 
-class Page2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var current = appState.index;
-    var shoeList = appState.shoeList;
-    return Container(
-      color: Colors.amber,
-      child: GridView.builder(
-        physics: ScrollPhysics(),
-        shrinkWrap: true,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        // padding: const EdgeInsets.symmetric(horizontal: 30),
+// class Page12 extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     var appState = context.watch<MyAppState>();
+//     var current = appState.index;
+//     var shoeList = appState.shoeList;
 
-        itemCount: shoeList.length,
-        itemBuilder: (BuildContext ctx, index) {
-          return Card(
-            child: Container(
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
-              margin: EdgeInsets.all(5),
-              padding: EdgeInsets.all(5),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Image.asset(
-                          shoeList[index].imagePath,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Text(
-                        'Title',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Subtitle',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 0.0,
-          mainAxisSpacing: 0,
-          //mainAxisExtent: 100,
-        ),
-      ),
-    );
-  }
-}
+//     return Container(
+//       color: Colors.amber,
+//       child: GridView.builder(
+//         physics: ScrollPhysics(),
+//         shrinkWrap: true,
+//         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+//         // padding: const EdgeInsets.symmetric(horizontal: 30),
 
-class Page3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var current = appState.index;
-    var shoeList = returnShoesType(2);
-    return Container(
-      color: Colors.amber,
-      child: GridView.builder(
-        physics: ScrollPhysics(),
-        shrinkWrap: true,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        // padding: const EdgeInsets.symmetric(horizontal: 30),
-
-        itemCount: shoeList.length,
-        itemBuilder: (BuildContext ctx, index) {
-          return Card(
-            child: Container(
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
-              margin: EdgeInsets.all(5),
-              padding: EdgeInsets.all(5),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Image.asset(
-                          shoeList[index].imagePath,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Text(
-                        'Title',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Subtitle',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 0.0,
-          mainAxisSpacing: 0,
-          //mainAxisExtent: 100,
-        ),
-      ),
-    );
-  }
-}
-
-class Page4 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var current = appState.index;
-    var shoeList = returnShoesType(3);
-    return Container(
-      color: Colors.amber,
-      child: GridView.builder(
-        physics: ScrollPhysics(),
-        shrinkWrap: true,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        // padding: const EdgeInsets.symmetric(horizontal: 30),
-
-        itemCount: shoeList.length,
-        itemBuilder: (BuildContext ctx, index) {
-          return Card(
-            child: Container(
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
-              margin: EdgeInsets.all(5),
-              padding: EdgeInsets.all(5),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Image.asset(
-                          shoeList[index].imagePath,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Text(
-                        'Title',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Subtitle',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 0.0,
-          mainAxisSpacing: 0,
-          //mainAxisExtent: 100,
-        ),
-      ),
-    );
-  }
-}
-
-var testvar = Row();
-var testContainer = Container();
+//         itemCount: shoeList.length,
+//         itemBuilder: (BuildContext ctx, index) {
+//           return Card(
+//             child: Container(
+//               decoration:
+//                   BoxDecoration(borderRadius: BorderRadius.circular(20)),
+//               margin: EdgeInsets.all(5),
+//               padding: EdgeInsets.all(5),
+//               child: Stack(
+//                 children: [
+//                   Column(
+//                     crossAxisAlignment: CrossAxisAlignment.stretch,
+//                     children: [
+//                       Expanded(
+//                         child: Image.asset(
+//                           shoeList[index].imagePath,
+//                           fit: BoxFit.fill,
+//                         ),
+//                       ),
+//                       Text(
+//                         'Title',
+//                         style: TextStyle(
+//                           fontSize: 18,
+//                           fontWeight: FontWeight.bold,
+//                         ),
+//                       ),
+//                       Row(
+//                         children: [
+//                           Text(
+//                             'Subtitle',
+//                             style: TextStyle(
+//                               fontWeight: FontWeight.bold,
+//                               fontSize: 15,
+//                             ),
+//                           ),
+//                         ],
+//                       )
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           );
+//         },
+//         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//           crossAxisCount: 2,
+//           childAspectRatio: 1.0,
+//           crossAxisSpacing: 0.0,
+//           mainAxisSpacing: 0,
+//           //mainAxisExtent: 100,
+//         ),
+//       ),
+//     );
+//   }
+// }
