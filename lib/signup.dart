@@ -69,15 +69,12 @@ class _SignupPageState extends State<SignupPage> {
                       phoneNumberController,
                       passwordController,
                       emailController);
-                  if (check == "Authentication successful") {
+                      print(check);         
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (_) => SignInPage(),
                       ),
                     );
-                  } else {
-                    //กรณีที่ไม่ได้ ให้ alart ว่าผิด
-                  }
                 },
                 child: Text('SignUp')),
           ],
@@ -107,8 +104,8 @@ Future<String> signupReq(name, username, password, phone, email) async {
 
 String _localhost() {
   if (Platform.isAndroid) {
-    return 'http://10.0.2.2:3000/';
+    return 'http://10.0.2.2:3000';
   } else {
-    return 'http://localhost:3000/';
+    return 'http://localhost:3000';
   } // for iOS simulator
 }
