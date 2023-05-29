@@ -1,13 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/CartScreen.dart';
-import 'package:flutter_application_2/signin.dart';
-
-import 'package:flutter_application_2/signup.dart';
-import 'main.dart';
-import 'dart:io';
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+
+import 'main.dart';
 
 class AccountScreen extends StatefulWidget {
   final String name;
@@ -49,30 +47,37 @@ class Item {
 class _AccountScreenState extends State<AccountScreen> {
   Item item = Item();
 
-  Future<Item> getData() async{
-  final response = await http.post(Uri.parse(_localhost() + "/getDB"),
-  headers: <String, String>{
+  Future<Item> getData() async {
+    final response = await http.post(
+      Uri.parse(_localhost() + "/getDB"),
+      headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'username': widget.currentUsername,
-      }),);
-      var responseData = json.decode(response.body);
-      Item item = Item(
+      }),
+    );
+    var responseData = json.decode(response.body);
+    Item item = Item(
       id: responseData["0"]["id"],
       name: responseData["0"]["name"].toString(),
       username: responseData["0"]["username"].toString(),
       email: responseData["0"]["email"].toString(),
       phone: responseData["0"]["phone"].toString(),
-      password: responseData["0"]["password"].toString(),);
+      password: responseData["0"]["password"].toString(),
+    );
 
-  return item;
-}
+    return item;
+  }
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {item = await getData();});
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      item = await getData();
+    });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -213,7 +218,9 @@ class _AccountScreenState extends State<AccountScreen> {
                   if (index == 0) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage(currentUsername : widget.currentUsername)),
+                      MaterialPageRoute(
+                          builder: (context) => MyHomePage(
+                              currentUsername: widget.currentUsername)),
                     );
                   } else if (index == 1) {
                     Navigator.push(
@@ -224,12 +231,12 @@ class _AccountScreenState extends State<AccountScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AccountScreen(
-                            name: item.name.toString(),
-                            phone: item.phone.toString(),
-                            email: item.email.toString(),
-                            password: item.password.toString(),
-                            currentUsername: widget.currentUsername,
+                        builder: (context) => AccountScreen(
+                          name: item.name.toString(),
+                          phone: item.phone.toString(),
+                          email: item.email.toString(),
+                          password: item.password.toString(),
+                          currentUsername: widget.currentUsername,
                         ),
                       ),
                     );
@@ -241,12 +248,12 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
         onWillPop: () async {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SignupPage()));
+              context, MaterialPageRoute(builder: (context) => MyApp()));
           return true;
         });
   }
-  
 }
+
 String _localhost() {
   if (Platform.isAndroid) {
     return 'http://10.0.2.2:3000';

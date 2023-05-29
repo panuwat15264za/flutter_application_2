@@ -4,23 +4,41 @@ import 'CartScreen.dart';
 import 'cartScreen.dart';
 import 'data.dart';
 
-class ShoesScreen extends StatelessWidget {
+class ShoesScreen extends StatefulWidget {
   final ShoeData shoe;
-  final BuildContext context;
   final CartScreen cartScreen;
 
-  ShoesScreen(
-      {required this.shoe, required this.context, required this.cartScreen});
+  ShoesScreen({required this.shoe, required this.cartScreen});
+
+  @override
+  _ShoesScreenState createState() => _ShoesScreenState();
+}
+
+class _ShoesScreenState extends State<ShoesScreen> {
+  bool isFavorite = false;
+  ValueNotifier<bool> showDescription = ValueNotifier<bool>(false);
+  late int selectedColor;
+
+  void _toggleFavorite() {
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
+
+  void _addToCart(BuildContext context) {
+    ScreenCart cartItem = ScreenCart(
+      shoeName: widget.shoe.shoeName,
+      imagePath: widget.shoe.imagePath,
+      price: widget.shoe.price,
+    );
+    widget.cartScreen.addToCart(cartItem);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Added to cart')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = false;
-    //
-    ValueNotifier<bool> showDescription = ValueNotifier<bool>(false);
-    //
-    List<Color> colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow];
-    int selectedColor;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -38,10 +56,7 @@ class ShoesScreen extends StatelessWidget {
               isFavorite ? Icons.favorite : Icons.favorite_border,
               color: isFavorite ? Colors.red : Colors.white,
             ),
-            onPressed: () {
-              isFavorite = !isFavorite;
-              // เพิ่มโค้ดสำหรับการเปลี่ยนสถานะรายการโปรดที่นี่
-            },
+            onPressed: _toggleFavorite,
           ),
         ],
       ),
@@ -52,12 +67,12 @@ class ShoesScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Image.asset(
-                shoe.imagePath,
+                widget.shoe.imagePath,
               ),
             ),
             SizedBox(height: 16.0),
             Text(
-              shoe.shoeName,
+              widget.shoe.shoeName,
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
@@ -65,7 +80,7 @@ class ShoesScreen extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Text(
-              '\$${shoe.price.toStringAsFixed(2)}',
+              '\$${widget.shoe.price.toStringAsFixed(2)}',
               style: TextStyle(
                 fontSize: 18.0,
               ),
@@ -77,7 +92,7 @@ class ShoesScreen extends StatelessWidget {
                   width: 24.0,
                   height: 24.0,
                   decoration: BoxDecoration(
-                    // color: shoe.colors,
+                    // color: widget.shoe.colors,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -114,7 +129,7 @@ class ShoesScreen extends StatelessWidget {
                     builder: (context, value, child) {
                       return value
                           ? Text(
-                              shoe.shoeDescription,
+                              widget.shoe.shoeDescription,
                               style: TextStyle(
                                 fontSize: 18.0,
                               ),
@@ -186,21 +201,4 @@ class _ButtonRowState extends State<ButtonRow> {
       ],
     );
   }
-}
-
-void _addToCart(BuildContext context) {
-  // สร้างอินสแตนซ์ของคลาส ScreenCart โดยใช้ข้อมูลจาก shoe ที่รับเข้ามา
-  ScreenCart cartItem = ScreenCart(
-    shoeName: shoe.shoeName,
-    imagePath: shoe.imagePath,
-    price: shoe.price,
-  );
-
-  // เรียกใช้เมธอดในตัวแปร cartScreen ที่รับเข้ามาเพื่อเพิ่มรายการลงในตะกร้าสินค้า
-  cartScreen.addToCart(cartItem);
-
-  // แสดง SnackBar เพื่อแสดงข้อความยืนยันการเพิ่มสินค้าลงในตะกร้า
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text('Added to cart')),
-  );
 }

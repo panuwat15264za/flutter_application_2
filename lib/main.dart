@@ -1,17 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/signin.dart';
-import 'package:flutter_application_2/signup.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import 'CartScreen.dart';
 import 'accountScreen.dart';
 import 'data.dart';
-import 'shoesScreen.dart';
-
-import 'dart:io';
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -43,7 +38,7 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
           ),
         ),
-        home: SignupPage(),
+        home: CartScreen(),
       ),
     );
   }
@@ -87,31 +82,37 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isSelected = false;
 
   var selectedIndex = 0;
-  
-    Item item = Item();
 
-  Future<Item> getData() async{
-  final response = await http.post(Uri.parse(_localhost() + "/getDB"),
-  headers: <String, String>{
+  Item item = Item();
+
+  Future<Item> getData() async {
+    final response = await http.post(
+      Uri.parse(_localhost() + "/getDB"),
+      headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'username': widget.currentUsername,
-      }),);
-      var responseData = json.decode(response.body);
-      Item item = Item(
+      }),
+    );
+    var responseData = json.decode(response.body);
+    Item item = Item(
       id: responseData["0"]["id"],
       name: responseData["0"]["name"],
       username: widget.currentUsername,
       email: responseData["0"]["email"],
       phone: responseData["0"]["phone"],
-      password: responseData["0"]["password"],);
+      password: responseData["0"]["password"],
+    );
 
-  return item;
-}
+    return item;
+  }
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {item = await getData();});
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      item = await getData();
+    });
     super.initState();
   }
 
@@ -403,14 +404,14 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Align(
               alignment: Alignment.topRight,
               child: GestureDetector(
-                onTap: () {
-                  // ดำเนินการที่คุณต้องการเมื่อคลิกที่รูป
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ShoesScreen(shoe: data)),
-                  );
-                },
+                // onTap: () {
+                //   // ดำเนินการที่คุณต้องการเมื่อคลิกที่รูป
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => ShoesScreen(shoe: data)),
+                //   );
+                // },
                 child: Container(
                   width: 179,
                   height: 265,
@@ -622,55 +623,55 @@ class Page1 extends StatelessWidget {
         itemCount: shoeList.length,
         itemBuilder: (BuildContext ctx, index) {
           return GestureDetector(
-              onTap: () {
-                // ดำเนินการที่คุณต้องการเมื่อคลิกที่รูป
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ShoesScreen(shoe: shoeList[index])),
-                );
-              },
+              // onTap: () {
+              //   // ดำเนินการที่คุณต้องการเมื่อคลิกที่รูป
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ShoesScreen(shoe: shoeList[index])),
+              //   );
+              // },
               child: Card(
-                child: Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                  margin: EdgeInsets.all(5),
-                  padding: EdgeInsets.all(5),
-                  child: Stack(
+            child: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            child: Image.asset(
-                              shoeList[index].imagePath,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Text(
-                            shoeList[index].shoeName,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                shoeList[index].price.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
+                      Expanded(
+                        child: Image.asset(
+                          shoeList[index].imagePath,
+                          fit: BoxFit.fill,
+                        ),
                       ),
+                      Text(
+                        shoeList[index].shoeName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            shoeList[index].price.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
-                ),
-              ));
+                ],
+              ),
+            ),
+          ));
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
