@@ -66,8 +66,8 @@ class _SignupPageState extends State<SignupPage> {
                   String? check = await signupReq(
                       nameController,
                       usernameController,
-                      phoneNumberController,
                       passwordController,
+                      phoneNumberController,
                       emailController);
                       print(check);         
                     Navigator.of(context).pushReplacement(
