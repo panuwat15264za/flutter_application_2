@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'main.dart';
+import 'package:flutter_application_2/signup.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -19,48 +20,118 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign In'),
-      ),
+      backgroundColor: Color(0xFFF5F5F5),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'LOGIN',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 24.0),
             TextField(
               controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: 'Username',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
             ),
             SizedBox(height: 16.0),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              obscureText: true,
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: 32.0),
             ElevatedButton(
-                onPressed: () async {
-                  String? check = await signinReq(
-                    _usernameController,
-                    _passwordController,
-                    _emailController,
+              onPressed: () async {
+                String? check = await signinReq(
+                  _usernameController,
+                  _passwordController,
+                  _emailController,
+                );
+                if (check == "Authentication successful") {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          MyHomePage(currentUsername: _usernameController.text),
+                    ),
                   );
-                  if (check == "Authentication successful") {
+                }
+                // } else {
+
+                //   //กรณีที่ไม่ได้ ให้ alart ว่าผิด
+                // }
+              },
+              child: Text('Sign In'),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF00AABF),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "If you don't have an account?",
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(width: 4.0),
+                GestureDetector(
+                  onTap: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => MyHomePage(currentUsername : _usernameController.text),
+                        builder: (_) => SignupPage(), //เปลี่ยนไปหน้าสมัคร
                       ),
                     );
-                  }
-                  // } else {
-
-                  //   //กรณีที่ไม่ได้ ให้ alart ว่าผิด
-                  // }
-                },
-                child: Text('SignIn')),
+                  },
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF00AABF),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
