@@ -51,7 +51,7 @@ class _SignInPageState extends State<SignInPage> {
                   if (check == "Authentication successful") {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => MyHomePage(),
+                        builder: (_) => MyHomePage(currentUsername : _usernameController.text),
                       ),
                     );
                   }
