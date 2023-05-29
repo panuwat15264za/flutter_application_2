@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/signin.dart';
+import 'package:flutter_application_2/signup.dart';
 import 'package:provider/provider.dart';
 
 import 'CartScreen.dart';
@@ -6,8 +8,21 @@ import 'accountScreen.dart';
 import 'data.dart';
 import 'shoesScreen.dart';
 
+import 'dart:io';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 void main() {
   runApp(MyApp());
+}
+
+String _localhost() {
+  if (Platform.isAndroid) {
+    return 'http://10.0.2.2:3000';
+  } else {
+    return 'http://localhost:3000';
+  } // for iOS simulator
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +43,7 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
           ),
         ),
-        home: MyHomePage(),
+        home: SignupPage(),
       ),
     );
   }
@@ -56,7 +71,9 @@ class MyAppState extends ChangeNotifier {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  final String currentUsername;
+  MyHomePage({super.key, required this.currentUsername});
+
   bool isSelected = false; //สร้างตัวแปร isSelected เพื่อเก็บสถานะการเลือก
 
   @override
@@ -70,6 +87,33 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isSelected = false;
 
   var selectedIndex = 0;
+  
+    Item item = Item();
+
+  Future<Item> getData() async{
+  final response = await http.post(Uri.parse(_localhost() + "/getDB"),
+  headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'username': widget.currentUsername,
+      }),);
+      var responseData = json.decode(response.body);
+      Item item = Item(
+      id: responseData["0"]["id"],
+      name: responseData["0"]["name"],
+      username: widget.currentUsername,
+      email: responseData["0"]["email"],
+      phone: responseData["0"]["phone"],
+      password: responseData["0"]["password"],);
+
+  return item;
+}
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {item = await getData();});
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -487,10 +531,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => AccountScreen(
-                            name: 'text',
-                            phone: 'text',
-                            email: 'text',
-                            password: 'text',
+                            name: item.name.toString(),
+                            phone: item.phone.toString(),
+                            email: item.email.toString(),
+                            password: item.password.toString(),
+                            currentUsername: widget.currentUsername,
                           ),
                         ),
                       );
