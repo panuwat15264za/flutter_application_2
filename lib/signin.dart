@@ -86,11 +86,26 @@ class _SignInPageState extends State<SignInPage> {
                           MyHomePage(currentUsername: _usernameController.text),
                     ),
                   );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Wrong Password'),
+                        content:
+                            Text('Please check your password and try again.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 }
-                // } else {
-
-                //   //กรณีที่ไม่ได้ ให้ alart ว่าผิด
-                // }
               },
               child: Text('Sign In'),
               style: ElevatedButton.styleFrom(
